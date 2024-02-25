@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class Examination2GaraApplication
 
 fun main(args: Array<String>) {
-	runApplication<Examination2GaraApplication>(*args)
+  runApplication<Examination2GaraApplication>(*args)
 }
