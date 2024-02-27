@@ -9,7 +9,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>examination2-integration-test</artifactId>
+    <artifactId>integration-test</artifactId>
     <name>${project.artifactId}</name>
     <description>Integration test</description>
 
