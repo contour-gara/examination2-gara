@@ -18,6 +18,7 @@
         <kotlin.version>1.9.22</kotlin.version>
 
         <spring-boot.version>3.2.2</spring-boot.version>
+        <rest-assured.version>5.4.0</rest-assured.version>
     </properties>
 
     <dependencyManagement>
@@ -67,6 +68,20 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>${rest-assured.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>spring-mock-mvc</artifactId>
+            <version>${rest-assured.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
