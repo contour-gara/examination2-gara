@@ -8,7 +8,9 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.http.HttpStatus.CREATED
 import org.springframework.http.HttpStatus.OK
+import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.test.web.servlet.MockMvc
 
 @WebMvcTest
@@ -74,5 +76,18 @@ class BooksControllerTest {
       .body("author", equalTo(author))
       .body("publisher", equalTo(publisher))
       .body("price", equalTo(price))
+  }
+
+  @Test
+  fun `登録の場合、レスポンスコード 201 とヘッダーにロケーションが返る`() {
+    // execute & assert
+    given()
+      .contentType(APPLICATION_JSON_VALUE)
+      .body("{\"title\": \"Clean Agile\",\"author\": \"Robert C. Martin\",\"publisher\": \"ドワンゴ\",\"price\": 2640}")
+      .`when`()
+      .post("/v1/books")
+      .then()
+      .status(CREATED)
+      .header("Location", equalTo("http://localhost/v1/books/1"))
   }
 }
