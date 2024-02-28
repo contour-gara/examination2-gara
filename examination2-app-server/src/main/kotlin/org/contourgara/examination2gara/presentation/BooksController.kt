@@ -21,12 +21,22 @@ import java.net.URI
  */
 @RestController
 class BooksController {
+  /**
+   * ルートエンドポイントです。
+   * Get メソッドでアクセスされた場合、レスポンスコード 200 を返します。
+   */
   @GetMapping("/")
   @ResponseStatus(OK)
   fun root(): Unit {
-//    何もしません
+    // 何もしません
   }
 
+  /**
+   * 全件検索のエンドポイントです。
+   * Get メソッドでアクセスされた場合、レスポンスコード 200 を返します。
+   *
+   * @return 本情報のリストオブジェクト。
+   */
   @GetMapping("/v1/books")
   @ResponseStatus(OK)
   fun findAll(): AllBookResponse {
@@ -36,6 +46,13 @@ class BooksController {
     ))
   }
 
+  /**
+   * ID 検索のエンドポイントです。
+   * Get メソッドでアクセスされた場合、レスポンスコード 200 を返します。
+   *
+   * @param id 検索する本 ID。
+   * @return 本情報のリストオブジェクト。
+   */
   @GetMapping("/v1/books/{id}")
   @ResponseStatus(OK)
   fun findById(@PathVariable id: String): BookResponse {
@@ -44,6 +61,13 @@ class BooksController {
     return BookResponse("2", "アジャイルサムライ", "Jonathan Rasmusson", "オーム社", 2860)
   }
 
+  /**
+   * 登録のエンドポイントです。
+   * Post メソッドでアクセスされた場合、レスポンスコード 201 を返します。
+   *
+   * @param createBookRequest 登録したい本情報。
+   * @return ヘッダーの Location に登録した本情報のエンドポイントがあります。
+   */
   @PostMapping("/v1/books")
   @ResponseStatus(CREATED)
   fun create(@RequestBody createBookRequest: CreateBookRequest): ResponseEntity<Unit> {
