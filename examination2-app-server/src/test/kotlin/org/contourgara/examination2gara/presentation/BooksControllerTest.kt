@@ -4,6 +4,8 @@ import io.restassured.module.mockmvc.RestAssuredMockMvc.*
 import org.hamcrest.Matchers.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.CsvSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.HttpStatus.OK
@@ -20,7 +22,7 @@ class BooksControllerTest {
   }
 
   @Test
-  fun `ルートにアクセスした場合、レスポンスコード200が返る`() {
+  fun `ルートにアクセスした場合、レスポンスコード 200 が返る`() {
     // execute & assert
     given()
       .`when`()
@@ -30,7 +32,7 @@ class BooksControllerTest {
   }
 
   @Test
-  fun `全件検索の場合、レスポンスコード200と本情報のリストが返る`() {
+  fun `全件検索の場合、レスポンスコード 200 と本情報のリストが返る`() {
     // execute & assert
     given()
       .`when`()
@@ -47,5 +49,30 @@ class BooksControllerTest {
       .body("books[1].author", equalTo("Jonathan Rasmusson"))
       .body("books[1].publisher", equalTo("オーム社"))
       .body("books[1].price", equalTo(2860))
+  }
+
+  @ParameterizedTest
+//  @CsvSource(delimiter = '|', textBlock = """# id | title | author | publisher | price
+//    1 | テスト駆動開発 | Kent Beck | オーム社 | 3080
+//    2 | アジャイルサムライ | Jonathan Rasmusson | オーム社 | 2860""")
+  @CsvSource(delimiter = '|', value = [
+    // id | title           | author             | publisher | price
+    "   1 | テスト駆動開発    | Kent Beck          | オーム社    | 3080",
+    "   2 | アジャイルサムライ | Jonathan Rasmusson | オーム社    | 2860"
+                                      ])
+  fun `ID 検索の場合、レスポンスコード 200 と本情報が返る`(
+    id : String, title : String, author: String, publisher: String, price: Int
+  ) {
+    // execute & assert
+    given()
+      .`when`()
+      .get("/v1/books/$id")
+      .then()
+      .status(OK)
+      .body("id", equalTo(id))
+      .body("title", equalTo(title))
+      .body("author", equalTo(author))
+      .body("publisher", equalTo(publisher))
+      .body("price", equalTo(price))
   }
 }
