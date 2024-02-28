@@ -1,12 +1,15 @@
 package org.contourgara.examination2gara.presentation
 
 import org.contourgara.examination2gara.presentation.request.CreateBookRequest
+import org.contourgara.examination2gara.presentation.request.UpdateBookRequest
 import org.contourgara.examination2gara.presentation.response.AllBookResponse
 import org.contourgara.examination2gara.presentation.response.BookResponse
 import org.springframework.http.HttpStatus.CREATED
+import org.springframework.http.HttpStatus.NO_CONTENT
 import org.springframework.http.HttpStatus.OK
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -82,5 +85,11 @@ class BooksController {
       .toUri()
 
     return ResponseEntity.created(uri).build()
+  }
+
+  @PatchMapping("/v1/books/{id}")
+  @ResponseStatus(NO_CONTENT)
+  fun update(@RequestBody updateBookRequest: UpdateBookRequest): Unit {
+    // 何もしません
   }
 }

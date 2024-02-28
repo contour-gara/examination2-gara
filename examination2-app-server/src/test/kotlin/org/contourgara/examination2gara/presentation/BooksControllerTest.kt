@@ -9,6 +9,7 @@ import org.junit.jupiter.params.provider.CsvSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.HttpStatus.CREATED
+import org.springframework.http.HttpStatus.NO_CONTENT
 import org.springframework.http.HttpStatus.OK
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.test.web.servlet.MockMvc
@@ -93,5 +94,17 @@ class BooksControllerTest {
       .then()
       .status(CREATED)
       .header("Location", equalTo("http://localhost/v1/books/$id"))
+  }
+
+  @Test
+  fun `本情報を更新した場合、レスポンスコード 204 が返る`() {
+    // execute & assert
+    given()
+      .contentType(APPLICATION_JSON_VALUE)
+      .body("{\"author\": \"Uncle Bob\"}")
+      .`when`()
+      .patch("/v1/books/1")
+      .then()
+      .status(NO_CONTENT)
   }
 }
