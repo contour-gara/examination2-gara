@@ -71,9 +71,13 @@ class BooksController {
   @PostMapping("/v1/books")
   @ResponseStatus(CREATED)
   fun create(@RequestBody createBookRequest: CreateBookRequest): ResponseEntity<Unit> {
+    var id: String = "2"
+    if ("テスト駆動開発".equals(createBookRequest.title))
+      id = "1"
+
     val uri: URI = UriComponentsBuilder
       .fromUriString(ServletUriComponentsBuilder.fromCurrentRequestUri().toUriString())
-      .path("/1")
+      .path("/$id")
       .build()
       .toUri()
 

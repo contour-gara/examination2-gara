@@ -54,9 +54,6 @@ class BooksControllerTest {
   }
 
   @ParameterizedTest
-//  @CsvSource(delimiter = '|', textBlock = """# id | title | author | publisher | price
-//    1 | テスト駆動開発 | Kent Beck | オーム社 | 3080
-//    2 | アジャイルサムライ | Jonathan Rasmusson | オーム社 | 2860""")
   @CsvSource(delimiter = '|', value = [
     // id | title           | author             | publisher | price
     "   1 | テスト駆動開発    | Kent Beck          | オーム社    | 3080",
@@ -78,16 +75,23 @@ class BooksControllerTest {
       .body("price", equalTo(price))
   }
 
-  @Test
-  fun `登録の場合、レスポンスコード 201 とヘッダーにロケーションが返る`() {
+  @ParameterizedTest
+  @CsvSource(delimiter = '|', value = [
+    // id | title           | author             | publisher | price
+    "   1 | テスト駆動開発    | Kent Beck          | オーム社    | 3080",
+    "   2 | アジャイルサムライ | Jonathan Rasmusson | オーム社    | 2860"
+  ])
+  fun `登録の場合、レスポンスコード 201 とヘッダーにロケーションが返る`(
+    id : String, title : String, author: String, publisher: String, price: Int
+  ) {
     // execute & assert
     given()
       .contentType(APPLICATION_JSON_VALUE)
-      .body("{\"title\": \"Clean Agile\",\"author\": \"Robert C. Martin\",\"publisher\": \"ドワンゴ\",\"price\": 2640}")
+      .body("{\"title\": \"$title\",\"author\": \"$author\",\"publisher\": \"$publisher\",\"price\": $price}")
       .`when`()
       .post("/v1/books")
       .then()
       .status(CREATED)
-      .header("Location", equalTo("http://localhost/v1/books/1"))
+      .header("Location", equalTo("http://localhost/v1/books/$id"))
   }
 }
