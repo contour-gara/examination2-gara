@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus.CREATED
 import org.springframework.http.HttpStatus.NO_CONTENT
 import org.springframework.http.HttpStatus.OK
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -90,6 +91,12 @@ class BooksController {
   @PatchMapping("/v1/books/{id}")
   @ResponseStatus(NO_CONTENT)
   fun update(@RequestBody updateBookRequest: UpdateBookRequest): Unit {
+    // 何もしません
+  }
+
+  @DeleteMapping("/v1/books/{id}")
+  @ResponseStatus(NO_CONTENT)
+  fun delete(): Unit {
     // 何もしません
   }
 }

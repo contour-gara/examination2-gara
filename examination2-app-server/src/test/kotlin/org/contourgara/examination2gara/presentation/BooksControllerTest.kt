@@ -107,4 +107,14 @@ class BooksControllerTest {
       .then()
       .status(NO_CONTENT)
   }
+
+  @Test
+  fun `本情報を削除した場合、レスポンスコード 204 が返る`() {
+    // execute & assert
+    given()
+      .`when`()
+      .delete("/v1/books/1")
+      .then()
+      .status(NO_CONTENT)
+  }
 }
