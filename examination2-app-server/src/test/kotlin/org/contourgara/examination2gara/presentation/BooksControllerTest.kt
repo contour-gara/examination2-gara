@@ -1,6 +1,7 @@
 package org.contourgara.examination2gara.presentation
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc.*
+import org.hamcrest.Matchers.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -26,5 +27,25 @@ class BooksControllerTest {
       .get("/")
       .then()
       .status(OK)
+  }
+
+  @Test
+  fun `全件検索の場合、レスポンスコード200と本情報のリストが返る`() {
+    // execute & assert
+    given()
+      .`when`()
+      .get("/v1/books")
+      .then()
+      .status(OK)
+      .body("books[0].id", equalTo("1"))
+      .body("books[0].title", equalTo("テスト駆動開発"))
+      .body("books[0].author", equalTo("Kent Beck"))
+      .body("books[0].publisher", equalTo("オーム社"))
+      .body("books[0].price", equalTo(3080))
+      .body("books[1].id", equalTo("2"))
+      .body("books[1].title", equalTo("アジャイルサムライ"))
+      .body("books[1].author", equalTo("Jonathan Rasmusson"))
+      .body("books[1].publisher", equalTo("オーム社"))
+      .body("books[1].price", equalTo(2860))
   }
 }
