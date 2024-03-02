@@ -1,5 +1,6 @@
 package org.contourgara.examination2gara.presentation
 
+import org.contourgara.examination2gara.application.FindAllBooksUseCase
 import org.contourgara.examination2gara.presentation.request.CreateBookRequest
 import org.contourgara.examination2gara.presentation.request.UpdateBookRequest
 import org.contourgara.examination2gara.presentation.response.AllBookResponse
@@ -24,7 +25,9 @@ import java.net.URI
  * BooksController は、本情報のエンドポイントです。
  */
 @RestController
-class BooksController {
+class BooksController(
+  private val findAllBooksUseCase: FindAllBooksUseCase
+) {
   /**
    * ルートエンドポイントです。
    * Get メソッドでアクセスされた場合、レスポンスコード 200 を返します。
@@ -44,10 +47,7 @@ class BooksController {
   @GetMapping("/v1/books")
   @ResponseStatus(OK)
   fun findAll(): AllBookResponse {
-    return AllBookResponse(listOf(
-      BookResponse("1", "テスト駆動開発", "Kent Beck", "オーム社", 3080),
-      BookResponse("2", "アジャイルサムライ", "Jonathan Rasmusson", "オーム社", 2860)
-    ))
+    return AllBookResponse.of(findAllBooksUseCase.execute())
   }
 
   /**

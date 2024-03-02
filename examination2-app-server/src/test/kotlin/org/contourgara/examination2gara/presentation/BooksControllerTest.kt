@@ -1,13 +1,17 @@
 package org.contourgara.examination2gara.presentation
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc.*
+import org.contourgara.examination2gara.application.FindAllBooksUseCase
+import org.contourgara.examination2gara.domain.Book
 import org.hamcrest.Matchers.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
+import org.mockito.Mockito.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.HttpStatus.CREATED
 import org.springframework.http.HttpStatus.NO_CONTENT
 import org.springframework.http.HttpStatus.OK
@@ -18,6 +22,9 @@ import org.springframework.test.web.servlet.MockMvc
 class BooksControllerTest {
   @Autowired
   lateinit var mockMvc: MockMvc
+
+  @MockBean
+  lateinit var findAllBooksUseCase: FindAllBooksUseCase
 
   @BeforeEach
   fun setUp() {
@@ -36,6 +43,12 @@ class BooksControllerTest {
 
   @Test
   fun `全件検索の場合、レスポンスコード 200 と本情報のリストが返る`() {
+    // setup
+    doReturn(listOf(
+      Book("1", "テスト駆動開発", "Kent Beck", "オーム社", 3080),
+      Book("2", "アジャイルサムライ", "Jonathan Rasmusson", "オーム社", 2860)
+    )).`when`(findAllBooksUseCase).execute()
+
     // execute & assert
     given()
       .`when`()
