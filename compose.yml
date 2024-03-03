@@ -1,0 +1,53 @@
+version: "3"
+services:
+  app-server:
+    build:
+      context: ./examination2-app-server
+      dockerfile: src/main/docker/Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+      - "5005:5005"
+    networks:
+      - exam-nw
+    healthcheck:
+      test: "curl -f http://localhost:8080/actuator/health || exit 1"
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/sample
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+      JAVA_TOOL_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+
+  postgres:
+    image: postgres:11.9-alpine
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: sample
+      TZ: "Asia/Tokyo"
+    networks:
+      - exam-nw
+    ports:
+      - '5432:5432'
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  sonarqube:
+    image: sonarqube:10.4.1-community
+    ports:
+      - "9000:9000"
+    profiles: [ "local" ]
+
+networks:
+  exam-nw:
+    driver: bridge
