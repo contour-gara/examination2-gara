@@ -19,7 +19,11 @@
 
         <spring-boot.version>3.2.2</spring-boot.version>
         <jackson-module-kotlin.version>2.17.0-rc1</jackson-module-kotlin.version>
+        <mybatis-spring-boot-starter.version>3.0.3</mybatis-spring-boot-starter.version>
+        <flywaydb.version>10.8.1</flywaydb.version>
         <rest-assured.version>5.4.0</rest-assured.version>
+        <h2.version>2.2.224</h2.version>
+        <database-rider.version>1.41.1</database-rider.version>
 
         <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
     </properties>
@@ -64,15 +68,32 @@
             <version>${jackson-module-kotlin.version}</version>
         </dependency>
 
-        <!-- Provided -->
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
-            <optional>true</optional>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>${mybatis-spring-boot-starter.version}</version>
         </dependency>
 
+        <!-- Provided -->
         <!-- Runtime -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>${flywaydb.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+            <version>${flywaydb.version}</version>
+        </dependency>
+
         <!-- Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -91,6 +112,20 @@
             <groupId>io.rest-assured</groupId>
             <artifactId>spring-mock-mvc</artifactId>
             <version>${rest-assured.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.database-rider</groupId>
+            <artifactId>rider-junit5</artifactId>
+            <version>${database-rider.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
