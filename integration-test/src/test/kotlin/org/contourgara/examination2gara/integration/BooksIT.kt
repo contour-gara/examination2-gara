@@ -40,4 +40,25 @@ class BooksIT {
       .then()
       .statusCode(OK.value())
   }
+
+  @DataSet("datasets/setup/2-book.yml")
+  @ExpectedDataSet("datasets/expected/2-book.yml")
+  @Test
+  fun `本情報を全件検索できる`() {
+    // execute & assert
+    given()
+      .get("/v1/books")
+      .then()
+      .statusCode(OK.value())
+      .body("books[0].id", equalTo("1"))
+      .body("books[0].title", equalTo("テスト駆動開発"))
+      .body("books[0].author", equalTo("Kent Beck"))
+      .body("books[0].publisher", equalTo("オーム社"))
+      .body("books[0].price", equalTo(3080))
+      .body("books[1].id", equalTo("2"))
+      .body("books[1].title", equalTo("アジャイルサムライ"))
+      .body("books[1].author", equalTo("Jonathan Rasmusson"))
+      .body("books[1].publisher", equalTo("オーム社"))
+      .body("books[1].price", equalTo(2860))
+  }
 }
