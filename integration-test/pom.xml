@@ -18,6 +18,13 @@
         <kotlin.version>1.9.22</kotlin.version>
 
         <spring-boot.version>3.2.2</spring-boot.version>
+        <rest-assured.version>5.4.0</rest-assured.version>
+        <database-rider.version>1.41.1</database-rider.version>
+
+        <flywaydb.version>10.8.1</flywaydb.version>
+        <maven-failsafe-plugin.version>3.2.5</maven-failsafe-plugin.version>
+        <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
+        <docker-compose-maven-plugin.version>1.0.0</docker-compose-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -49,12 +56,39 @@
             <artifactId>kotlin-stdlib</artifactId>
         </dependency>
 
-        <!-- Runtime -->
         <!-- Provided -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Runtime -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
         <!-- Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>${rest-assured.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.database-rider</groupId>
+            <artifactId>rider-junit5</artifactId>
+            <version>${database-rider.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -62,13 +96,9 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-
-            <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
+                <version>${kotlin.version}</version>
                 <configuration>
                     <args>
                         <arg>-Xjsr305=strict</arg>
@@ -82,6 +112,90 @@
                         <groupId>org.jetbrains.kotlin</groupId>
                         <artifactId>kotlin-maven-allopen</artifactId>
                         <version>${kotlin.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven-failsafe-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            **/*Test.java
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>io.brachu</groupId>
+                <artifactId>docker-compose-maven-plugin</artifactId>
+                <version>${docker-compose-maven-plugin.version}</version>
+                <configuration>
+                    <projectName>integration-test</projectName>
+                    <file>../compose.yml</file>
+                    <workDir>../</workDir>
+                    <wait>
+                        <value>30</value>
+                        <unit>SECONDS</unit>
+                    </wait>
+                    <forceBuild>true</forceBuild>
+                    <removeVolumes>true</removeVolumes>
+                    <removeOrphans>true</removeOrphans>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>up</goal>
+                            <goal>down</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>${flywaydb.version}</version>
+                <configuration>
+                    <url>jdbc:postgresql://localhost:5432/sample</url>
+                    <user>user</user>
+                    <password>password</password>
+                    <target>1</target>
+                    <locations>
+                        <location>filesystem:../examination2-app-server/src/main/resources/db/migration</location>
+                    </locations>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>pre-integration-test</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>migrate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.flywaydb</groupId>
+                        <artifactId>flyway-database-postgresql</artifactId>
+                        <version>${flywaydb.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
