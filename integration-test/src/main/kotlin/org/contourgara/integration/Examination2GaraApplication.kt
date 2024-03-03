@@ -1,4 +1,4 @@
-package org.contourgara.examination2gara
+package org.contourgara.integration
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
