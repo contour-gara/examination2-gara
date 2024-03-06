@@ -10,4 +10,6 @@ interface BookRepository {
    * @return 本情報のリスト。
    */
   fun findAll(): List<Book>
+
+  fun findById(id: String): Book?
 }

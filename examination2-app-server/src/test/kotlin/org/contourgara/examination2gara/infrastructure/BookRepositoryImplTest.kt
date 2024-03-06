@@ -3,6 +3,7 @@ package org.contourgara.examination2gara.infrastructure
 import org.assertj.core.api.Assertions.*
 import org.contourgara.examination2gara.domain.Book
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
@@ -39,5 +40,30 @@ class BookRepositoryImplTest {
     )
 
     assertThat(actual).isEqualTo(expected)
+  }
+
+  @Nested
+  inner class `ID検索` {
+    @Test
+    fun `検索できた場合、本情報が返る`() {
+      // setup
+      // execute
+      val actual: Book? = sut.findById("1")
+
+      // assert
+      val expected: Book = Book("1", "テスト駆動開発", "Kent Beck", "オーム社", 3080)
+
+      assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `検索できなかった場合、null`() {
+      // setup
+      // execute
+      val actual: Book? = sut.findById("2")
+
+      // assert
+      assertThat(actual).isNull()
+    }
   }
 }
