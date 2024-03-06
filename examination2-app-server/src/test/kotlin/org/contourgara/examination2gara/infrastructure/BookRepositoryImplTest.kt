@@ -47,6 +47,9 @@ class BookRepositoryImplTest {
     @Test
     fun `検索できた場合、本情報が返る`() {
       // setup
+      doReturn(BookEntity("1", "テスト駆動開発", "Kent Beck", "オーム社", 3080))
+        .`when`(bookMapper).findById("1")
+
       // execute
       val actual: Book? = sut.findById("1")
 
@@ -59,6 +62,9 @@ class BookRepositoryImplTest {
     @Test
     fun `検索できなかった場合、null`() {
       // setup
+      doReturn(null)
+        .`when`(bookMapper).findById("2")
+
       // execute
       val actual: Book? = sut.findById("2")
 
