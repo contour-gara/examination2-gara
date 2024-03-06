@@ -2,6 +2,7 @@ package org.contourgara.examination2gara.presentation
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc.*
 import org.contourgara.examination2gara.application.FindAllBooksUseCase
+import org.contourgara.examination2gara.application.FindBookByIdUseCase
 import org.contourgara.examination2gara.domain.Book
 import org.hamcrest.Matchers.*
 import org.junit.jupiter.api.BeforeEach
@@ -25,6 +26,9 @@ class BooksControllerTest {
 
   @MockBean
   lateinit var findAllBooksUseCase: FindAllBooksUseCase
+
+  @MockBean
+  lateinit var findBookByIdUseCase: FindBookByIdUseCase
 
   @BeforeEach
   fun setUp() {
@@ -76,6 +80,10 @@ class BooksControllerTest {
   fun `ID 検索の場合、レスポンスコード 200 と本情報が返る`(
     id : String, title : String, author: String, publisher: String, price: Int
   ) {
+    // setup
+    doReturn(Book(id, title, author, publisher, price))
+      .`when`(findBookByIdUseCase).execute(id)
+
     // execute & assert
     given()
       .`when`()

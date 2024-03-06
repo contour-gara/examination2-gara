@@ -1,6 +1,7 @@
 package org.contourgara.examination2gara.presentation
 
 import org.contourgara.examination2gara.application.FindAllBooksUseCase
+import org.contourgara.examination2gara.application.FindBookByIdUseCase
 import org.contourgara.examination2gara.presentation.request.CreateBookRequest
 import org.contourgara.examination2gara.presentation.request.UpdateBookRequest
 import org.contourgara.examination2gara.presentation.response.AllBookResponse
@@ -26,7 +27,8 @@ import java.net.URI
  */
 @RestController
 class BooksController(
-  private val findAllBooksUseCase: FindAllBooksUseCase
+  private val findAllBooksUseCase: FindAllBooksUseCase,
+  private val findBookByIdUseCase: FindBookByIdUseCase
 ) {
   /**
    * ルートエンドポイントです。
@@ -60,9 +62,10 @@ class BooksController(
   @GetMapping("/v1/books/{id}")
   @ResponseStatus(OK)
   fun findById(@PathVariable id: String): BookResponse {
-    if ("1".equals(id))
-      return BookResponse("1", "テスト駆動開発", "Kent Beck", "オーム社", 3080)
-    return BookResponse("2", "アジャイルサムライ", "Jonathan Rasmusson", "オーム社", 2860)
+//    if ("1".equals(id))
+//      return BookResponse("1", "テスト駆動開発", "Kent Beck", "オーム社", 3080)
+//    return BookResponse("2", "アジャイルサムライ", "Jonathan Rasmusson", "オーム社", 2860)
+    return BookResponse.of(findBookByIdUseCase.execute(id))
   }
 
   /**
