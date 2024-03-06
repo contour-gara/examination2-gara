@@ -59,4 +59,31 @@ class BookMapperTest {
       assertThat(actual).isEqualTo(expected)
     }
   }
+
+  @Nested
+  inner class `ID 検索` {
+    @DataSet(value = ["datasets/setup/1-book.yml"])
+    @ExpectedDataSet(value = ["/datasets/expected/1-book.yml"])
+    @Test
+    fun `検索できた場合、本情報が返る`() {
+      // execute
+      val actual: BookEntity? = sut.findById("1")
+
+      // assert
+      val expected: BookEntity = BookEntity("1", "テスト駆動開発", "Kent Beck", "オーム社", 3080)
+
+      assertThat(actual).isEqualTo(expected)
+    }
+
+    @DataSet(value = ["datasets/setup/1-book.yml"])
+    @ExpectedDataSet(value = ["/datasets/expected/1-book.yml"])
+    @Test
+    fun `検索できなかった場合、nullが返る`() {
+      // execute
+      val actual: BookEntity? = sut.findById("2")
+
+      // assert
+      assertThat(actual).isNull()
+    }
+  }
 }
