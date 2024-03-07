@@ -23,6 +23,10 @@ class BookRepositoryImpl(
   }
 
   override fun create(book: Book): Book {
-    return Book(BookId(1), "テスト駆動開発", "Kent Beck", "オーム社", 3080)
+    val bookEntity: BookEntity = BookEntity.of(book)
+
+    val count: Int = bookMapper.create(bookEntity)
+
+    return bookEntity.toModel()
   }
 }

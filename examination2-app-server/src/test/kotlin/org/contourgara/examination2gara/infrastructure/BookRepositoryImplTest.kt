@@ -79,10 +79,10 @@ class BookRepositoryImplTest {
     @Test
     fun `登録できた場合、本情報が返る`() {
       // setup
-      val book = Book(BookId.ofEmptyId(), "テスト駆動開発", "Kent Beck", "オーム社", 3080)
+      doReturn(1).`when`(bookMapper).create(BookEntity(1, "テスト駆動開発", "Kent Beck", "オーム社", 3080))
 
       // execute
-      val actual = sut.create(book)
+      val actual = sut.create(Book(BookId(1), "テスト駆動開発", "Kent Beck", "オーム社", 3080))
 
       // assert
       val expected = Book(BookId(1), "テスト駆動開発", "Kent Beck", "オーム社", 3080)

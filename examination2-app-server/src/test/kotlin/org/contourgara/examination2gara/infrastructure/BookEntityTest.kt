@@ -19,4 +19,18 @@ class BookEntityTest {
 
     assertThat(actual).isEqualTo(expected)
   }
+
+  @Test
+  fun `ドメインモデルから生成できる`() {
+    // setup
+    val book = Book(BookId(1), "テスト駆動開発", "Kent Beck", "オーム社", 3080)
+
+    // execute
+    val actual = BookEntity.of(book)
+
+    // assert
+    val expected = BookEntity(1, "テスト駆動開発", "Kent Beck", "オーム社", 3080)
+
+    assertThat(actual).isEqualTo(expected)
+  }
 }

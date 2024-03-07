@@ -91,7 +91,8 @@ class BookMapperTest {
 
   @Nested
   inner class `登録` {
-    @DataSet(value = ["datasets/setup/0-book.yml"])
+    @DataSet(value = ["datasets/setup/0-book.yml"],
+      executeScriptsBefore = ["datasets/setup/set-sequence-from-1.sql"])
     @ExpectedDataSet(value = ["/datasets/expected/1-book.yml"])
     @Test
     fun `登録できた場合、登録件数を返す`() {
@@ -104,7 +105,8 @@ class BookMapperTest {
       assertThat(actual).isEqualTo(expected)
     }
 
-    @DataSet(value = ["datasets/setup/0-book.yml"])
+    @DataSet(value = ["datasets/setup/0-book.yml"],
+      executeScriptsBefore = ["datasets/setup/set-sequence-from-1.sql"])
     @ExpectedDataSet(value = ["/datasets/expected/1-book.yml"])
     @Test
     fun `登録できた場合、Entity の ID が更新される`() {
@@ -121,7 +123,8 @@ class BookMapperTest {
       assertThat(actual).isEqualTo(expected)
     }
 
-    @DataSet(value = ["datasets/setup/0-book.yml"])
+    @DataSet(value = ["datasets/setup/0-book.yml"],
+      executeScriptsBefore = ["datasets/setup/set-sequence-from-1.sql"])
     @ExpectedDataSet(value = ["/datasets/expected/2-book.yml"])
     @Test
     fun `ID が自動採番される`() {
