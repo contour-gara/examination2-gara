@@ -12,6 +12,7 @@ import org.hamcrest.Matchers.*
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpStatus.CREATED
+import org.springframework.http.HttpStatus.NO_CONTENT
 import org.springframework.http.HttpStatus.OK
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 
@@ -94,5 +95,19 @@ class BooksIT {
       .then()
       .statusCode(CREATED.value())
       .header("Location", equalTo("http://localhost:8080/v1/books/1"))
+  }
+
+  @DataSet("datasets/setup/1-book.yml")
+  @ExpectedDataSet("datasets/expected/1-book-update.yml")
+  @Test
+  fun `更新できた場合、レスポンスコード 204 が返る`() {
+    // execute & assert
+    given()
+      .contentType(APPLICATION_JSON_VALUE)
+      .body("{\"author\": \"Uncle Bob\"}")
+      .`when`()
+      .patch("/v1/books/1")
+      .then()
+      .statusCode(NO_CONTENT.value())
   }
 }

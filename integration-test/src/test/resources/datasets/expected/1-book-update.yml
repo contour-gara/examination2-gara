@@ -1,0 +1,6 @@
+books:
+  - id: 1
+    title: "テスト駆動開発"
+    author: "Uncle Bob"
+    publisher: "オーム社"
+    price: 3080
