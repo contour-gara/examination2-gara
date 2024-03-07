@@ -11,7 +11,10 @@ import java.sql.DriverManager
 import org.hamcrest.Matchers.*
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.springframework.http.HttpStatus.CREATED
 import org.springframework.http.HttpStatus.OK
+import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
+
 
 
 @DBRider
@@ -65,7 +68,7 @@ class BooksIT {
   @DataSet("datasets/setup/1-book.yml")
   @ExpectedDataSet("datasets/expected/1-book.yml")
   @Test
-  fun `ID 検索した場合、レスポンスコード 200 と本情報が返る`() {
+  fun `ID 検索できた場合、レスポンスコード 200 と本情報が返る`() {
     // execute & assert
     given()
       .get("/v1/books/1")
@@ -76,5 +79,20 @@ class BooksIT {
       .body("author", equalTo("Kent Beck"))
       .body("publisher", equalTo("オーム社"))
       .body("price", equalTo(3080))
+  }
+
+  @DataSet("datasets/setup/0-book.yml")
+  @ExpectedDataSet("datasets/expected/1-book.yml")
+  @Test
+  fun `登録できた場合、レスポンスコード 201 とヘッダーにロケーションが返る`() {
+    // execute & assert
+    given()
+      .contentType(APPLICATION_JSON_VALUE)
+      .body("{\"title\": \"テスト駆動開発\",\"author\": \"Kent Beck\",\"publisher\": \"オーム社\",\"price\": 3080}")
+      .`when`()
+      .post("/v1/books")
+      .then()
+      .statusCode(CREATED.value())
+      .header("Location", equalTo("http://localhost:8080/v1/books/1"))
   }
 }
