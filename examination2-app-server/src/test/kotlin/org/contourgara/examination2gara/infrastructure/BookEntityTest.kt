@@ -2,6 +2,7 @@ package org.contourgara.examination2gara.infrastructure
 
 import org.assertj.core.api.Assertions.*
 import org.contourgara.examination2gara.domain.Book
+import org.contourgara.examination2gara.domain.BookId
 import org.junit.jupiter.api.Test
 
 class BookEntityTest {
@@ -14,7 +15,7 @@ class BookEntityTest {
     val actual: Book = sut.toModel()
 
     // assert
-    val expected: Book = Book(1, "テスト駆動開発", "Kent Beck", "オーム社", 3080)
+    val expected: Book = Book(BookId(1), "テスト駆動開発", "Kent Beck", "オーム社", 3080)
 
     assertThat(actual).isEqualTo(expected)
   }

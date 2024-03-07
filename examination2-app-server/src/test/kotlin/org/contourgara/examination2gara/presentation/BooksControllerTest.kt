@@ -6,6 +6,7 @@ import org.contourgara.examination2gara.application.CreateBookUseCase
 import org.contourgara.examination2gara.application.FindAllBooksUseCase
 import org.contourgara.examination2gara.application.FindBookByIdUseCase
 import org.contourgara.examination2gara.domain.Book
+import org.contourgara.examination2gara.domain.BookId
 import org.hamcrest.Matchers.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -54,8 +55,8 @@ class BooksControllerTest {
   fun `全件検索の場合、レスポンスコード 200 と本情報のリストが返る`() {
     // setup
     doReturn(listOf(
-      Book(1, "テスト駆動開発", "Kent Beck", "オーム社", 3080),
-      Book(2, "アジャイルサムライ", "Jonathan Rasmusson", "オーム社", 2860)
+      Book(BookId(1), "テスト駆動開発", "Kent Beck", "オーム社", 3080),
+      Book(BookId(2), "アジャイルサムライ", "Jonathan Rasmusson", "オーム社", 2860)
     )).`when`(findAllBooksUseCase).execute()
 
     // execute & assert
@@ -86,7 +87,7 @@ class BooksControllerTest {
     id : Long, title : String, author: String, publisher: String, price: Int
   ) {
     // setup
-    doReturn(Book(id, title, author, publisher, price))
+    doReturn(Book(BookId(id), title, author, publisher, price))
       .`when`(findBookByIdUseCase).execute(id.toString())
 
     // execute & assert
@@ -112,7 +113,7 @@ class BooksControllerTest {
     id : Long, title : String, author: String, publisher: String, price: Int
   ) {
     // setup
-    doReturn(Book(id, title, author, publisher, price))
+    doReturn(Book(BookId(id), title, author, publisher, price))
       .`when`(createBookUseCase).execute(CreateBookParam(title, author, publisher, price))
 
     // execute & assert

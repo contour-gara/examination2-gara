@@ -81,7 +81,7 @@ class BooksController(
 
     val uri: URI = UriComponentsBuilder
       .fromUriString(ServletUriComponentsBuilder.fromCurrentRequestUri().toUriString())
-      .path("/${book.id}")
+      .path("/${book.id.id}")
       .build()
       .toUri()
 

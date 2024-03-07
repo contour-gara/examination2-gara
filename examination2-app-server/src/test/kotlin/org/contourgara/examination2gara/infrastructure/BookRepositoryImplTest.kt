@@ -2,6 +2,7 @@ package org.contourgara.examination2gara.infrastructure
 
 import org.assertj.core.api.Assertions.*
 import org.contourgara.examination2gara.domain.Book
+import org.contourgara.examination2gara.domain.BookId
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -35,8 +36,8 @@ class BookRepositoryImplTest {
 
     // assert
     val expected: List<Book> = listOf(
-      Book(1, "テスト駆動開発", "Kent Beck", "オーム社", 3080),
-      Book(2, "アジャイルサムライ", "Jonathan Rasmusson", "オーム社", 2860)
+      Book(BookId(1), "テスト駆動開発", "Kent Beck", "オーム社", 3080),
+      Book(BookId(2), "アジャイルサムライ", "Jonathan Rasmusson", "オーム社", 2860)
     )
 
     assertThat(actual).isEqualTo(expected)
@@ -54,7 +55,7 @@ class BookRepositoryImplTest {
       val actual: Book? = sut.findById("1")
 
       // assert
-      val expected: Book = Book(1, "テスト駆動開発", "Kent Beck", "オーム社", 3080)
+      val expected: Book = Book(BookId(1), "テスト駆動開発", "Kent Beck", "オーム社", 3080)
 
       assertThat(actual).isEqualTo(expected)
     }

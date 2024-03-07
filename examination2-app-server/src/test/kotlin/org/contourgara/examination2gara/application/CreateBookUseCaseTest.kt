@@ -2,6 +2,7 @@ package org.contourgara.examination2gara.application
 
 import org.assertj.core.api.Assertions.*
 import org.contourgara.examination2gara.domain.Book
+import org.contourgara.examination2gara.domain.BookId
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
@@ -24,7 +25,7 @@ class CreateBookUseCaseTest {
     val actual = sut.execute(createBookParam)
 
     // assert
-    val expected = Book(1, "テスト駆動開発", "Kent Beck", "オーム社", 3080)
+    val expected = Book(BookId(1), "テスト駆動開発", "Kent Beck", "オーム社", 3080)
 
     assertThat(actual).isEqualTo(expected)
   }

@@ -20,7 +20,7 @@ data class BookResponse(
      * @param book 本情報。
      */
     fun of(book: Book): BookResponse {
-      return BookResponse(book.id.toString(), book.title, book.author, book.publisher, book.price)
+      return BookResponse(book.id.id.toString(), book.title, book.author, book.publisher, book.price)
     }
   }
 }

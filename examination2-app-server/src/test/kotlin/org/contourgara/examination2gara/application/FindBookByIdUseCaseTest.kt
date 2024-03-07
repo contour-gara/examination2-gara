@@ -3,6 +3,7 @@ package org.contourgara.examination2gara.application
 import org.assertj.core.api.Assertions.*
 import org.contourgara.examination2gara.application.exception.NotFoundBookException
 import org.contourgara.examination2gara.domain.Book
+import org.contourgara.examination2gara.domain.BookId
 import org.contourgara.examination2gara.domain.BookRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -26,14 +27,14 @@ class FindBookByIdUseCaseTest {
   @Test
   fun `本 ID が存在した場合、本情報を返す`() {
     // setup
-    doReturn(Book(1, "テスト駆動開発", "Kent Beck", "オーム社", 3080))
+    doReturn(Book(BookId(1), "テスト駆動開発", "Kent Beck", "オーム社", 3080))
       .`when`(bookRepository).findById("1")
 
     // execute
     val actual: Book = sut.execute("1")
 
     // assert
-    val expected: Book = Book(1, "テスト駆動開発", "Kent Beck", "オーム社", 3080)
+    val expected: Book = Book(BookId(1), "テスト駆動開発", "Kent Beck", "オーム社", 3080)
 
     assertThat(actual).isEqualTo(expected)
   }
