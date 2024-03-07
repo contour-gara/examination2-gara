@@ -1,5 +1,5 @@
 books:
-  - id: "1"
+  - id: 1
     title: "テスト駆動開発"
     author: "Kent Beck"
     publisher: "オーム社"

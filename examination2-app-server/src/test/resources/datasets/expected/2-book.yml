@@ -1,0 +1,11 @@
+books:
+  - id: 1
+    title: "テスト駆動開発"
+    author: "Kent Beck"
+    publisher: "オーム社"
+    price: 3080
+  - id: 2
+    title: "アジャイルサムライ"
+    author: "Jonathan Rasmusson"
+    publisher: "オーム社"
+    price: 2860

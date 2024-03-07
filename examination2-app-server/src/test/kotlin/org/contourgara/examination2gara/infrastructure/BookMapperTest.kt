@@ -6,6 +6,8 @@ import com.github.database.rider.core.api.dataset.DataSet
 import com.github.database.rider.core.api.dataset.ExpectedDataSet
 import com.github.database.rider.junit5.api.DBRider
 import org.assertj.core.api.Assertions.*
+import org.contourgara.examination2gara.domain.Book
+import org.contourgara.examination2gara.domain.BookId
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -84,6 +86,47 @@ class BookMapperTest {
 
       // assert
       assertThat(actual).isNull()
+    }
+  }
+
+  @Nested
+  inner class `登録` {
+    @DataSet(value = ["datasets/setup/0-book.yml"])
+    @ExpectedDataSet(value = ["/datasets/expected/1-book.yml"])
+    @Test
+    fun `登録できた場合、登録件数を返す`() {
+      // execute
+      val actual = sut.create(BookEntity(0, "テスト駆動開発", "Kent Beck", "オーム社", 3080))
+
+      // assert
+      val expected = 1
+
+      assertThat(actual).isEqualTo(expected)
+    }
+
+    @DataSet(value = ["datasets/setup/0-book.yml"])
+    @ExpectedDataSet(value = ["/datasets/expected/1-book.yml"])
+    @Test
+    fun `登録できた場合、Entity の ID が更新される`() {
+      // setup
+      val bookEntity = BookEntity(0, "テスト駆動開発", "Kent Beck", "オーム社", 3080)
+
+      // execute
+      sut.create(bookEntity)
+      val actual = bookEntity.id
+
+      // assert
+      val expected = 1L
+
+      assertThat(actual).isEqualTo(expected)
+    }
+
+    @DataSet(value = ["datasets/setup/0-book.yml"])
+    @ExpectedDataSet(value = ["/datasets/expected/2-book.yml"])
+    @Test
+    fun `ID が自動採番される`() {
+      sut.create(BookEntity(0, "テスト駆動開発", "Kent Beck", "オーム社", 3080))
+      sut.create(BookEntity(0, "アジャイルサムライ", "Jonathan Rasmusson", "オーム社", 2860))
     }
   }
 }
