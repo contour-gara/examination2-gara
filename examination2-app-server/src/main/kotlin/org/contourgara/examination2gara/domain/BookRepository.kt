@@ -12,4 +12,6 @@ interface BookRepository {
   fun findAll(): List<Book>
 
   fun findById(id: String): Book?
+
+  fun create(book: Book): Book
 }
