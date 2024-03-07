@@ -3,6 +3,7 @@ package org.contourgara.examination2gara.infrastructure
 import org.assertj.core.api.Assertions.*
 import org.contourgara.examination2gara.domain.Book
 import org.contourgara.examination2gara.domain.BookId
+import org.contourgara.examination2gara.infrastructure.exception.QueryExecutionFailException
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -88,6 +89,20 @@ class BookRepositoryImplTest {
       val expected = Book(BookId(1), "テスト駆動開発", "Kent Beck", "オーム社", 3080)
 
       assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `登録できなかった場合、例外を投げる`() {
+      // setup
+      doReturn(0).`when`(bookMapper).create(BookEntity(1, "テスト駆動開発", "Kent Beck", "オーム社", 3080))
+
+      // execute & assert
+      assertThatThrownBy {
+        sut.create(Book(BookId(1), "テスト駆動開発", "Kent Beck", "オーム社", 3080))
+      }
+        .isInstanceOf(QueryExecutionFailException::class.java)
+        .extracting("title")
+        .isEqualTo("テスト駆動開発")
     }
   }
 }

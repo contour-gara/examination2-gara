@@ -3,6 +3,7 @@ package org.contourgara.examination2gara.infrastructure
 import org.contourgara.examination2gara.domain.Book
 import org.contourgara.examination2gara.domain.BookId
 import org.contourgara.examination2gara.domain.BookRepository
+import org.contourgara.examination2gara.infrastructure.exception.QueryExecutionFailException
 import org.springframework.stereotype.Repository
 
 /**
@@ -26,6 +27,9 @@ class BookRepositoryImpl(
     val bookEntity: BookEntity = BookEntity.of(book)
 
     val count: Int = bookMapper.create(bookEntity)
+
+    if (count != 1)
+      throw QueryExecutionFailException(bookEntity.id, bookEntity.title, bookEntity.author, bookEntity.publisher, bookEntity.price)
 
     return bookEntity.toModel()
   }
