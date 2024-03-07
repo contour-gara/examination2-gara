@@ -9,5 +9,5 @@ interface BookMapper {
   fun findAll(): List<BookEntity>
 
   @Select("SELECT id, title, author, publisher, price FROM books WHERE id = #{id}")
-  fun findById(id: String): BookEntity?
+  fun findById(id: Int): BookEntity?
 }

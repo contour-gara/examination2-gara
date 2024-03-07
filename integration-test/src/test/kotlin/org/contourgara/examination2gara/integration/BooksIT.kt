@@ -44,7 +44,7 @@ class BooksIT {
   @DataSet("datasets/setup/2-book.yml")
   @ExpectedDataSet("datasets/expected/2-book.yml")
   @Test
-  fun `本情報を全件検索できる`() {
+  fun `全件検索した場合、レスポンスコード 200 と本情報のリストが返る`() {
     // execute & assert
     given()
       .get("/v1/books")
@@ -60,5 +60,21 @@ class BooksIT {
       .body("books[1].author", equalTo("Jonathan Rasmusson"))
       .body("books[1].publisher", equalTo("オーム社"))
       .body("books[1].price", equalTo(2860))
+  }
+
+  @DataSet("datasets/setup/1-book.yml")
+  @ExpectedDataSet("datasets/expected/1-book.yml")
+  @Test
+  fun `ID 検索した場合、レスポンスコード 200 と本情報が返る`() {
+    // execute & assert
+    given()
+      .get("/v1/books/1")
+      .then()
+      .statusCode(OK.value())
+      .body("id", equalTo("1"))
+      .body("title", equalTo("テスト駆動開発"))
+      .body("author", equalTo("Kent Beck"))
+      .body("publisher", equalTo("オーム社"))
+      .body("price", equalTo(3080))
   }
 }

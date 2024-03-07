@@ -8,13 +8,13 @@ class BookEntityTest {
   @Test
   fun `ドメインモデルへ変換できる`() {
     // setup
-    val sut: BookEntity = BookEntity("1", "テスト駆動開発", "Kent Beck", "オーム社", 3080)
+    val sut: BookEntity = BookEntity(1, "テスト駆動開発", "Kent Beck", "オーム社", 3080)
 
     // execute
     val actual: Book = sut.toModel()
 
     // assert
-    val expected: Book = Book("1", "テスト駆動開発", "Kent Beck", "オーム社", 3080)
+    val expected: Book = Book(1, "テスト駆動開発", "Kent Beck", "オーム社", 3080)
 
     assertThat(actual).isEqualTo(expected)
   }

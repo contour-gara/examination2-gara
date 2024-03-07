@@ -26,8 +26,8 @@ class FindAllBooksUseCaseTest {
   fun `実行した場合、すべての本を返す`() {
     // setup
     doReturn(listOf(
-      Book("1", "テスト駆動開発", "Kent Beck", "オーム社", 3080),
-      Book("2", "アジャイルサムライ", "Jonathan Rasmusson", "オーム社", 2860)
+      Book(1, "テスト駆動開発", "Kent Beck", "オーム社", 3080),
+      Book(2, "アジャイルサムライ", "Jonathan Rasmusson", "オーム社", 2860)
     )).`when`(bookRepository).findAll()
 
     // execute
@@ -35,8 +35,8 @@ class FindAllBooksUseCaseTest {
 
     // assert
     val expected: List<Book> = listOf(
-      Book("1", "テスト駆動開発", "Kent Beck", "オーム社", 3080),
-      Book("2", "アジャイルサムライ", "Jonathan Rasmusson", "オーム社", 2860)
+      Book(1, "テスト駆動開発", "Kent Beck", "オーム社", 3080),
+      Book(2, "アジャイルサムライ", "Jonathan Rasmusson", "オーム社", 2860)
     )
 
     assertThat(actual).isEqualTo(expected)

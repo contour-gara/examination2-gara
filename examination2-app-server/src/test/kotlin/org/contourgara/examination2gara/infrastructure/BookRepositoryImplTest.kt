@@ -26,8 +26,8 @@ class BookRepositoryImplTest {
   fun `全件検索の場合、本情報のリストを返す`() {
     // setup
     doReturn(listOf(
-      BookEntity("1", "テスト駆動開発", "Kent Beck", "オーム社", 3080),
-      BookEntity("2", "アジャイルサムライ", "Jonathan Rasmusson", "オーム社", 2860)
+      BookEntity(1, "テスト駆動開発", "Kent Beck", "オーム社", 3080),
+      BookEntity(2, "アジャイルサムライ", "Jonathan Rasmusson", "オーム社", 2860)
     )).`when`(bookMapper).findAll()
 
     // execute
@@ -35,8 +35,8 @@ class BookRepositoryImplTest {
 
     // assert
     val expected: List<Book> = listOf(
-      Book("1", "テスト駆動開発", "Kent Beck", "オーム社", 3080),
-      Book("2", "アジャイルサムライ", "Jonathan Rasmusson", "オーム社", 2860)
+      Book(1, "テスト駆動開発", "Kent Beck", "オーム社", 3080),
+      Book(2, "アジャイルサムライ", "Jonathan Rasmusson", "オーム社", 2860)
     )
 
     assertThat(actual).isEqualTo(expected)
@@ -47,14 +47,14 @@ class BookRepositoryImplTest {
     @Test
     fun `検索できた場合、本情報が返る`() {
       // setup
-      doReturn(BookEntity("1", "テスト駆動開発", "Kent Beck", "オーム社", 3080))
-        .`when`(bookMapper).findById("1")
+      doReturn(BookEntity(1, "テスト駆動開発", "Kent Beck", "オーム社", 3080))
+        .`when`(bookMapper).findById(1)
 
       // execute
       val actual: Book? = sut.findById("1")
 
       // assert
-      val expected: Book = Book("1", "テスト駆動開発", "Kent Beck", "オーム社", 3080)
+      val expected: Book = Book(1, "テスト駆動開発", "Kent Beck", "オーム社", 3080)
 
       assertThat(actual).isEqualTo(expected)
     }
@@ -63,7 +63,7 @@ class BookRepositoryImplTest {
     fun `検索できなかった場合、null`() {
       // setup
       doReturn(null)
-        .`when`(bookMapper).findById("2")
+        .`when`(bookMapper).findById(2)
 
       // execute
       val actual: Book? = sut.findById("2")

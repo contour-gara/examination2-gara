@@ -18,6 +18,6 @@ class BookRepositoryImpl(
   }
 
   override fun findById(id: String): Book? {
-    return bookMapper.findById(id)?.toModel()
+    return bookMapper.findById(id.toInt())?.toModel()
   }
 }

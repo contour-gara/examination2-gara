@@ -23,22 +23,22 @@ class FindBookByIdUseCaseTest {
   }
 
   @Test
-  fun `本IDが存在した場合、本情報を返す`() {
+  fun `本 ID が存在した場合、本情報を返す`() {
     // setup
-    doReturn(Book("1", "テスト駆動開発", "Kent Beck", "オーム社", 3080))
+    doReturn(Book(1, "テスト駆動開発", "Kent Beck", "オーム社", 3080))
       .`when`(bookRepository).findById("1")
 
     // execute
     val actual: Book = sut.execute("1")
 
     // assert
-    val expected: Book = Book("1", "テスト駆動開発", "Kent Beck", "オーム社", 3080)
+    val expected: Book = Book(1, "テスト駆動開発", "Kent Beck", "オーム社", 3080)
 
     assertThat(actual).isEqualTo(expected)
   }
 
   @Test
-  fun `本IDが存在しない場合、本が見つからないという例外を返す`() {
+  fun `本 ID が存在しない場合、本が見つからないという例外を返す`() {
     // setup
     doThrow(NotFoundBookException("2"))
       .`when`(bookRepository).findById("2")

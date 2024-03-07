@@ -49,8 +49,8 @@ class BooksControllerTest {
   fun `全件検索の場合、レスポンスコード 200 と本情報のリストが返る`() {
     // setup
     doReturn(listOf(
-      Book("1", "テスト駆動開発", "Kent Beck", "オーム社", 3080),
-      Book("2", "アジャイルサムライ", "Jonathan Rasmusson", "オーム社", 2860)
+      Book(1, "テスト駆動開発", "Kent Beck", "オーム社", 3080),
+      Book(2, "アジャイルサムライ", "Jonathan Rasmusson", "オーム社", 2860)
     )).`when`(findAllBooksUseCase).execute()
 
     // execute & assert
@@ -78,11 +78,11 @@ class BooksControllerTest {
     "   2 | アジャイルサムライ | Jonathan Rasmusson | オーム社    | 2860"
                                       ])
   fun `ID 検索の場合、レスポンスコード 200 と本情報が返る`(
-    id : String, title : String, author: String, publisher: String, price: Int
+    id : Int, title : String, author: String, publisher: String, price: Int
   ) {
     // setup
     doReturn(Book(id, title, author, publisher, price))
-      .`when`(findBookByIdUseCase).execute(id)
+      .`when`(findBookByIdUseCase).execute(id.toString())
 
     // execute & assert
     given()
@@ -90,7 +90,7 @@ class BooksControllerTest {
       .get("/v1/books/$id")
       .then()
       .status(OK)
-      .body("id", equalTo(id))
+      .body("id", equalTo(id.toString()))
       .body("title", equalTo(title))
       .body("author", equalTo(author))
       .body("publisher", equalTo(publisher))

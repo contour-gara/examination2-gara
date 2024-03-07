@@ -62,9 +62,6 @@ class BooksController(
   @GetMapping("/v1/books/{id}")
   @ResponseStatus(OK)
   fun findById(@PathVariable id: String): BookResponse {
-//    if ("1".equals(id))
-//      return BookResponse("1", "テスト駆動開発", "Kent Beck", "オーム社", 3080)
-//    return BookResponse("2", "アジャイルサムライ", "Jonathan Rasmusson", "オーム社", 2860)
     return BookResponse.of(findBookByIdUseCase.execute(id))
   }
 

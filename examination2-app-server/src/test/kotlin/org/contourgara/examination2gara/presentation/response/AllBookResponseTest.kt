@@ -9,8 +9,8 @@ class AllBookResponseTest {
   fun `Book のリストからインスタンスを生成できる`() {
     // setup
     val books: List<Book> = listOf(
-      Book("1", "テスト駆動開発", "Kent Beck", "オーム社", 3080),
-      Book("2", "アジャイルサムライ", "Jonathan Rasmusson", "オーム社", 2860)
+      Book(1, "テスト駆動開発", "Kent Beck", "オーム社", 3080),
+      Book(2, "アジャイルサムライ", "Jonathan Rasmusson", "オーム社", 2860)
     )
 
     // execute

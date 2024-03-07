@@ -53,7 +53,7 @@ class BookMapperTest {
 
       // assert
       val expected: List<BookEntity> = listOf(
-        BookEntity("1", "テスト駆動開発", "Kent Beck", "オーム社", 3080)
+        BookEntity(1, "テスト駆動開発", "Kent Beck", "オーム社", 3080)
       )
 
       assertThat(actual).isEqualTo(expected)
@@ -67,10 +67,10 @@ class BookMapperTest {
     @Test
     fun `検索できた場合、本情報が返る`() {
       // execute
-      val actual: BookEntity? = sut.findById("1")
+      val actual: BookEntity? = sut.findById(1)
 
       // assert
-      val expected: BookEntity = BookEntity("1", "テスト駆動開発", "Kent Beck", "オーム社", 3080)
+      val expected: BookEntity = BookEntity(1, "テスト駆動開発", "Kent Beck", "オーム社", 3080)
 
       assertThat(actual).isEqualTo(expected)
     }
@@ -80,7 +80,7 @@ class BookMapperTest {
     @Test
     fun `検索できなかった場合、nullが返る`() {
       // execute
-      val actual: BookEntity? = sut.findById("2")
+      val actual: BookEntity? = sut.findById(2)
 
       // assert
       assertThat(actual).isNull()
