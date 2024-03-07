@@ -110,4 +110,16 @@ class BooksIT {
       .then()
       .statusCode(NO_CONTENT.value())
   }
+
+  @DataSet("datasets/setup/1-book.yml")
+  @ExpectedDataSet("datasets/expected/0-book.yml")
+  @Test
+  fun `削除できた場合、レスポンスコード 204 が返る`() {
+    // execute & assert
+    given()
+      .`when`()
+      .delete("/v1/books/1")
+      .then()
+      .statusCode(NO_CONTENT.value())
+  }
 }
