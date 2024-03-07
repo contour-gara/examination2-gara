@@ -1,12 +1,16 @@
 package org.contourgara.examination2gara.application
 
 import org.contourgara.examination2gara.domain.Book
-import org.contourgara.examination2gara.domain.BookId
+import org.contourgara.examination2gara.domain.BookRepository
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
-class CreateBookUseCase {
+@Transactional
+class CreateBookUseCase(
+  private val bookRepository: BookRepository
+) {
   fun execute(createBookParam: CreateBookParam): Book {
-    return Book(BookId(1), "テスト駆動開発", "Kent Beck", "オーム社", 3080)
+    return bookRepository.create(createBookParam.toModel())
   }
 }
