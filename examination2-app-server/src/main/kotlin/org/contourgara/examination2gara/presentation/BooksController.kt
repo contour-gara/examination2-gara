@@ -1,5 +1,6 @@
 package org.contourgara.examination2gara.presentation
 
+import org.contourgara.examination2gara.application.CreateBookUseCase
 import org.contourgara.examination2gara.application.FindAllBooksUseCase
 import org.contourgara.examination2gara.application.FindBookByIdUseCase
 import org.contourgara.examination2gara.presentation.request.CreateBookRequest
@@ -28,7 +29,8 @@ import java.net.URI
 @RestController
 class BooksController(
   private val findAllBooksUseCase: FindAllBooksUseCase,
-  private val findBookByIdUseCase: FindBookByIdUseCase
+  private val findBookByIdUseCase: FindBookByIdUseCase,
+  private val createBookUseCase: CreateBookUseCase,
 ) {
   /**
    * ルートエンドポイントです。
@@ -75,13 +77,11 @@ class BooksController(
   @PostMapping("/v1/books")
   @ResponseStatus(CREATED)
   fun create(@RequestBody createBookRequest: CreateBookRequest): ResponseEntity<Unit> {
-    var id: String = "2"
-    if ("テスト駆動開発".equals(createBookRequest.title))
-      id = "1"
+    val book = createBookUseCase.execute(createBookRequest.toParam())
 
     val uri: URI = UriComponentsBuilder
       .fromUriString(ServletUriComponentsBuilder.fromCurrentRequestUri().toUriString())
-      .path("/$id")
+      .path("/${book.id}")
       .build()
       .toUri()
 

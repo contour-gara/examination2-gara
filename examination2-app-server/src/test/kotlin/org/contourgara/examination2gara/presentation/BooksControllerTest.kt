@@ -1,6 +1,8 @@
 package org.contourgara.examination2gara.presentation
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc.*
+import org.contourgara.examination2gara.application.CreateBookParam
+import org.contourgara.examination2gara.application.CreateBookUseCase
 import org.contourgara.examination2gara.application.FindAllBooksUseCase
 import org.contourgara.examination2gara.application.FindBookByIdUseCase
 import org.contourgara.examination2gara.domain.Book
@@ -29,6 +31,9 @@ class BooksControllerTest {
 
   @MockBean
   lateinit var findBookByIdUseCase: FindBookByIdUseCase
+
+  @MockBean
+  lateinit var createBookUseCase: CreateBookUseCase
 
   @BeforeEach
   fun setUp() {
@@ -104,8 +109,12 @@ class BooksControllerTest {
     "   2 | アジャイルサムライ | Jonathan Rasmusson | オーム社    | 2860"
   ])
   fun `登録の場合、レスポンスコード 201 とヘッダーにロケーションが返る`(
-    id : String, title : String, author: String, publisher: String, price: Int
+    id : Long, title : String, author: String, publisher: String, price: Int
   ) {
+    // setup
+    doReturn(Book(id, title, author, publisher, price))
+      .`when`(createBookUseCase).execute(CreateBookParam(title, author, publisher, price))
+
     // execute & assert
     given()
       .contentType(APPLICATION_JSON_VALUE)
