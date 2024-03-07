@@ -105,4 +105,30 @@ class BookRepositoryImplTest {
         .isEqualTo("テスト駆動開発")
     }
   }
+
+  @Nested
+  inner class `更新` {
+    @Test
+    fun `更新できた場合、何も起きない`() {
+      // setup
+      doReturn(1).`when`(bookMapper).update(BookEntity(1, "テスト駆動開発", "Kent Beck", "オーム社", 3080))
+
+      // execute & assert
+      assertThatCode { sut.update(Book(BookId(1), "テスト駆動開発", "Kent Beck", "オーム社", 3080)) }.doesNotThrowAnyException()
+    }
+
+    @Test
+    fun `更新できなかった場合、例外を投げる`() {
+      // setup
+      doReturn(0).`when`(bookMapper).update(BookEntity(1, "テスト駆動開発", "Kent Beck", "オーム社", 3080))
+
+      // execute & assert
+      assertThatThrownBy {
+        sut.update(Book(BookId(1), "テスト駆動開発", "Kent Beck", "オーム社", 3080))
+      }
+        .isInstanceOf(QueryExecutionFailException::class.java)
+        .extracting("title")
+        .isEqualTo("テスト駆動開発")
+    }
+  }
 }

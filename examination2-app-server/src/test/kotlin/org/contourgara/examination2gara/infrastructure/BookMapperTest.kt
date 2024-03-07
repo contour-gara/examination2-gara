@@ -127,9 +127,16 @@ class BookMapperTest {
       executeScriptsBefore = ["datasets/setup/set-sequence-from-1.sql"])
     @ExpectedDataSet(value = ["/datasets/expected/2-book.yml"])
     @Test
-    fun `ID が自動採番される`() {
+    fun `登録できた場合、ID が自動採番される`() {
       sut.create(BookEntity(0, "テスト駆動開発", "Kent Beck", "オーム社", 3080))
       sut.create(BookEntity(0, "アジャイルサムライ", "Jonathan Rasmusson", "オーム社", 2860))
     }
+  }
+
+  @DataSet(value = ["datasets/setup/1-book.yml"])
+  @ExpectedDataSet(value = ["/datasets/expected/1-book-update.yml"])
+  @Test
+  fun `更新できた場合、本情報が更新される`() {
+    sut.update(BookEntity(1, "テスト駆動設計", "Kent", "オーム社", 3080))
   }
 }

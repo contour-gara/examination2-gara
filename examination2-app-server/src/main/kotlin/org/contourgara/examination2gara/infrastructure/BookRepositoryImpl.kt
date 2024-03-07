@@ -28,9 +28,19 @@ class BookRepositoryImpl(
 
     val count: Int = bookMapper.create(bookEntity)
 
-    if (count != 1)
-      throw QueryExecutionFailException(bookEntity.id, bookEntity.title, bookEntity.author, bookEntity.publisher, bookEntity.price)
+    checkQueryExecution(count, bookEntity)
 
     return bookEntity.toModel()
+  }
+
+  override fun update(book: Book): Unit {
+    val count: Int = bookMapper.update(BookEntity.of(book))
+
+    checkQueryExecution(count, BookEntity.of(book))
+  }
+
+  private fun checkQueryExecution(count: Int, bookEntity: BookEntity) {
+    if (count != 1)
+      throw QueryExecutionFailException(bookEntity.id, bookEntity.title, bookEntity.author, bookEntity.publisher, bookEntity.price)
   }
 }

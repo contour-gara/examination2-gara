@@ -13,4 +13,7 @@ interface BookMapper {
   @Insert("INSERT INTO books (id, title, author, publisher, price) VALUES (nextval('BOOK_ID_SEQ'), #{title}, #{author}, #{publisher}, #{price})")
   @Options(useGeneratedKeys = true, keyProperty = "id")
   fun create(bookEntity: BookEntity): Int
+
+  @Update("UPDATE books SET title = #{title}, author = #{author}, publisher = #{publisher}, price = #{price} WHERE id = #{id}")
+  fun update(bookEntity: BookEntity): Int
 }

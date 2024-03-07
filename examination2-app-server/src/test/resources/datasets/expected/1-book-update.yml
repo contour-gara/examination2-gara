@@ -1,0 +1,6 @@
+books:
+  - id: 1
+    title: "テスト駆動設計"
+    author: "Kent"
+    publisher: "オーム社"
+    price: 3080

@@ -14,4 +14,6 @@ interface BookRepository {
   fun findById(id: String): Book?
 
   fun create(book: Book): Book
+
+  fun update(book: Book): Unit
 }

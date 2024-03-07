@@ -1,10 +1,7 @@
 package org.contourgara.examination2gara.presentation
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc.*
-import org.contourgara.examination2gara.application.CreateBookParam
-import org.contourgara.examination2gara.application.CreateBookUseCase
-import org.contourgara.examination2gara.application.FindAllBooksUseCase
-import org.contourgara.examination2gara.application.FindBookByIdUseCase
+import org.contourgara.examination2gara.application.*
 import org.contourgara.examination2gara.domain.Book
 import org.contourgara.examination2gara.domain.BookId
 import org.hamcrest.Matchers.*
@@ -35,6 +32,9 @@ class BooksControllerTest {
 
   @MockBean
   lateinit var createBookUseCase: CreateBookUseCase
+
+  @MockBean
+  lateinit var updateBookUseCase: UpdateBookUseCase
 
   @BeforeEach
   fun setUp() {
