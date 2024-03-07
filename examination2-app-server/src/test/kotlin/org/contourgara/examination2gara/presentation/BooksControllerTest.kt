@@ -78,7 +78,7 @@ class BooksControllerTest {
     "   2 | アジャイルサムライ | Jonathan Rasmusson | オーム社    | 2860"
                                       ])
   fun `ID 検索の場合、レスポンスコード 200 と本情報が返る`(
-    id : Int, title : String, author: String, publisher: String, price: Int
+    id : Long, title : String, author: String, publisher: String, price: Int
   ) {
     // setup
     doReturn(Book(id, title, author, publisher, price))
