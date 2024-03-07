@@ -1,9 +1,6 @@
 package org.contourgara.examination2gara.presentation
 
-import org.contourgara.examination2gara.application.CreateBookUseCase
-import org.contourgara.examination2gara.application.FindAllBooksUseCase
-import org.contourgara.examination2gara.application.FindBookByIdUseCase
-import org.contourgara.examination2gara.application.UpdateBookUseCase
+import org.contourgara.examination2gara.application.*
 import org.contourgara.examination2gara.presentation.request.CreateBookRequest
 import org.contourgara.examination2gara.presentation.request.UpdateBookRequest
 import org.contourgara.examination2gara.presentation.response.AllBookResponse
@@ -33,6 +30,7 @@ class BooksController(
   private val findBookByIdUseCase: FindBookByIdUseCase,
   private val createBookUseCase: CreateBookUseCase,
   private val updateBookUseCase: UpdateBookUseCase,
+  private val deleteBookUseCase: DeleteBookUseCase,
 ) {
   /**
    * ルートエンドポイントです。
@@ -98,7 +96,7 @@ class BooksController(
 
   @DeleteMapping("/v1/books/{id}")
   @ResponseStatus(NO_CONTENT)
-  fun delete(): Unit {
-    // 何もしません
+  fun delete(@PathVariable id: String): Unit {
+    deleteBookUseCase.execute(id)
   }
 }

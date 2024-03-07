@@ -16,4 +16,6 @@ interface BookRepository {
   fun create(book: Book): Book
 
   fun update(book: Book): Unit
+
+  fun delete(id: String): Unit
 }

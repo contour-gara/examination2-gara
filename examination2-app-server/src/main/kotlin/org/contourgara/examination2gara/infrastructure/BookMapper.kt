@@ -16,4 +16,7 @@ interface BookMapper {
 
   @Update("UPDATE books SET title = #{title}, author = #{author}, publisher = #{publisher}, price = #{price} WHERE id = #{id}")
   fun update(bookEntity: BookEntity): Int
+
+  @Delete("DELETE from books WHERE id = #{id}")
+  fun delete(id: Long): Int
 }

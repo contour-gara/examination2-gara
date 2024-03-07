@@ -139,4 +139,11 @@ class BookMapperTest {
   fun `更新できた場合、本情報が更新される`() {
     sut.update(BookEntity(1, "テスト駆動設計", "Kent", "オーム社", 3080))
   }
+
+  @DataSet(value = ["datasets/setup/1-book.yml"])
+  @ExpectedDataSet(value = ["/datasets/expected/0-book.yml"])
+  @Test
+  fun `削除できた場合、本情報が削除される`() {
+    sut.delete(1)
+  }
 }

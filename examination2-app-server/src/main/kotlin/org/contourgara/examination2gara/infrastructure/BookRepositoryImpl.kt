@@ -39,8 +39,14 @@ class BookRepositoryImpl(
     checkQueryExecution(count, BookEntity.of(book))
   }
 
-  private fun checkQueryExecution(count: Int, bookEntity: BookEntity) {
+  override fun delete(id: String) {
+    val count: Int = bookMapper.delete(id.toLong())
+
+    checkQueryExecution(count, null)
+  }
+
+  private fun checkQueryExecution(count: Int, bookEntity: BookEntity?) {
     if (count != 1)
-      throw QueryExecutionFailException(bookEntity.id, bookEntity.title, bookEntity.author, bookEntity.publisher, bookEntity.price)
+      throw QueryExecutionFailException(bookEntity?.id, bookEntity?.title, bookEntity?.author, bookEntity?.publisher, bookEntity?.price)
   }
 }

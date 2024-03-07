@@ -36,6 +36,9 @@ class BooksControllerTest {
   @MockBean
   lateinit var updateBookUseCase: UpdateBookUseCase
 
+  @MockBean
+  lateinit var deleteBookUseCase: DeleteBookUseCase
+
   @BeforeEach
   fun setUp() {
     mockMvc(mockMvc)

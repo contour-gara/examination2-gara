@@ -131,4 +131,30 @@ class BookRepositoryImplTest {
         .isEqualTo("テスト駆動開発")
     }
   }
+
+  @Nested
+  inner class `削除` {
+    @Test
+    fun `削除できた場合、何も起きない`() {
+      // setup
+      doReturn(1).`when`(bookMapper).delete(1)
+
+      // execute & assert
+      assertThatCode { sut.delete("1") }.doesNotThrowAnyException()
+    }
+
+    @Test
+    fun `削除できなかった場合、例外を投げる`() {
+      // setup
+      doReturn(0).`when`(bookMapper).delete(1)
+
+      // execute & assert
+      assertThatThrownBy {
+        sut.delete("1")
+      }
+        .isInstanceOf(QueryExecutionFailException::class.java)
+        .extracting("title")
+        .isNull()
+    }
+  }
 }
