@@ -1,5 +1,6 @@
 package org.contourgara.examination2gara.application
 
+import org.contourgara.examination2gara.application.exception.NotFoundBookException
 import org.contourgara.examination2gara.domain.Book
 import org.contourgara.examination2gara.domain.BookRepository
 import org.springframework.stereotype.Service

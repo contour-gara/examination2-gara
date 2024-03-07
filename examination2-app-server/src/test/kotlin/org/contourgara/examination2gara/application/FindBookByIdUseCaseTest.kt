@@ -1,6 +1,7 @@
 package org.contourgara.examination2gara.application
 
 import org.assertj.core.api.Assertions.*
+import org.contourgara.examination2gara.application.exception.NotFoundBookException
 import org.contourgara.examination2gara.domain.Book
 import org.contourgara.examination2gara.domain.BookRepository
 import org.junit.jupiter.api.BeforeEach
