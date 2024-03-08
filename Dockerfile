@@ -18,9 +18,11 @@ RUN jlink \
     --no-man-pages \
     --add-modules $(cat jre-deps.info) \
     --output jre-min
+
 FROM amazonlinux:2023.3.20240219.0
 COPY --from=build /build/examination2-app-server/target/*.jar app.jar
 COPY --from=build /build/jre-min /opt/jre-min
+COPY --from=build /root/.postgresql/root.crt. /root/.postgresql/root.crt.
 ENV JAVA_HOME /opt/jre-min
 ENV PATH $JAVA_HOME/bin:$PATH
 ENV JAVA_ARGS '-Djavax.net.ssl.trustStore=${JAVA_HOME}"/lib/security/cacerts" -Djavax.net.ssl.trustStorePassword="changeit"'
