@@ -24,7 +24,8 @@ COPY --from=build /build/examination2-app-server/target/*.jar app.jar
 COPY --from=build /build/jre-min /opt/jre-min
 ENV JAVA_HOME /opt/jre-min
 ENV PATH $JAVA_HOME/bin:$PATH
-ENV JAVA_ARGS '-Djavax.net.ssl.trustStore=${JAVA_HOME}"/lib/security/cacerts" -Djavax.net.ssl.trustStorePassword="changeit"'
+# ENV JAVA_ARGS '-Djavax.net.ssl.trustStore=${JAVA_HOME}"/lib/security/cacerts" -Djavax.net.ssl.trustStorePassword="changeit"'
+COPY --from=build /build/jre-min/lib/security/cacerts /root/.postgresql/root.crt
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=render", "app.jar"]
 
