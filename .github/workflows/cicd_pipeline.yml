@@ -6,44 +6,44 @@ on:
       - main
 
 jobs:
-#  unit_test:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v4.1.1
-#
-#      - name: Set up Java 17
-#        uses: actions/setup-java@v4.0.0
-#        with:
-#          distribution: 'corretto'
-#          java-version: '17'
-#          cache: 'maven'
-#
-#      - name: Unit test
-#        run: mvn clean test
-#
-#  integration_test:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v4.1.1
-#
-#      - name: Set up Java 17
-#        uses: actions/setup-java@v4.0.0
-#        with:
-#          distribution: 'corretto'
-#          java-version: '17'
-#          cache: 'maven'
-#
-#      - name: Build
-#        run: mvn clean package -Dmaven.test.skip=true
-#
-#      - name: Integration test
-#        working-directory: ./integration-test
-#        run: mvn clean verify
-#
+  unit_test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4.0.0
+        with:
+          distribution: 'corretto'
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Unit test
+        run: mvn clean test
+
+  integration_test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4.0.0
+        with:
+          distribution: 'corretto'
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build
+        run: mvn clean package -Dmaven.test.skip=true
+
+      - name: Integration test
+        working-directory: ./integration-test
+        run: mvn clean verify
+
   cd:
-#    needs: [unit_test, integration_test]
+    needs: [unit_test, integration_test]
     runs-on: ubuntu-latest
     steps:
       - name: Deploy
