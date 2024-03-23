@@ -1,15 +1,21 @@
 package org.contourgara.examination2gara.presentation
 
-import io.restassured.module.mockmvc.RestAssuredMockMvc.*
-import org.contourgara.examination2gara.application.*
+import io.restassured.module.mockmvc.RestAssuredMockMvc.given
+import io.restassured.module.mockmvc.RestAssuredMockMvc.mockMvc
+import org.contourgara.examination2gara.application.CreateBookParam
+import org.contourgara.examination2gara.application.CreateBookUseCase
+import org.contourgara.examination2gara.application.DeleteBookUseCase
+import org.contourgara.examination2gara.application.FindAllBooksUseCase
+import org.contourgara.examination2gara.application.FindBookByIdUseCase
+import org.contourgara.examination2gara.application.UpdateBookUseCase
 import org.contourgara.examination2gara.domain.Book
 import org.contourgara.examination2gara.domain.BookId
-import org.hamcrest.Matchers.*
+import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
-import org.mockito.Mockito.*
+import org.mockito.Mockito.doReturn
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -57,10 +63,12 @@ class BooksControllerTest {
   @Test
   fun `全件検索の場合、レスポンスコード 200 と本情報のリストが返る`() {
     // setup
-    doReturn(listOf(
-      Book(BookId(1), "テスト駆動開発", "Kent Beck", "オーム社", 3080),
-      Book(BookId(2), "アジャイルサムライ", "Jonathan Rasmusson", "オーム社", 2860)
-    )).`when`(findAllBooksUseCase).execute()
+    doReturn(
+      listOf(
+        Book(BookId(1), "テスト駆動開発", "Kent Beck", "オーム社", 3080),
+        Book(BookId(2), "アジャイルサムライ", "Jonathan Rasmusson", "オーム社", 2860)
+      )
+    ).`when`(findAllBooksUseCase).execute()
 
     // execute & assert
     given()
@@ -81,13 +89,15 @@ class BooksControllerTest {
   }
 
   @ParameterizedTest
-  @CsvSource(delimiter = '|', value = [
-    // id | title           | author             | publisher | price
-    "   1 | テスト駆動開発    | Kent Beck          | オーム社    | 3080",
-    "   2 | アジャイルサムライ | Jonathan Rasmusson | オーム社    | 2860"
-                                      ])
+  @CsvSource(
+    delimiter = '|', value = [
+      // id | title           | author             | publisher | price
+      "   1 | テスト駆動開発    | Kent Beck          | オーム社    | 3080",
+      "   2 | アジャイルサムライ | Jonathan Rasmusson | オーム社    | 2860"
+    ]
+  )
   fun `ID 検索の場合、レスポンスコード 200 と本情報が返る`(
-    id : Long, title : String, author: String, publisher: String, price: Int
+    id: Long, title: String, author: String, publisher: String, price: Int
   ) {
     // setup
     doReturn(Book(BookId(id), title, author, publisher, price))
@@ -107,13 +117,15 @@ class BooksControllerTest {
   }
 
   @ParameterizedTest
-  @CsvSource(delimiter = '|', value = [
-    // id | title           | author             | publisher | price
-    "   1 | テスト駆動開発    | Kent Beck          | オーム社    | 3080",
-    "   2 | アジャイルサムライ | Jonathan Rasmusson | オーム社    | 2860"
-  ])
+  @CsvSource(
+    delimiter = '|', value = [
+      // id | title           | author             | publisher | price
+      "   1 | テスト駆動開発    | Kent Beck          | オーム社    | 3080",
+      "   2 | アジャイルサムライ | Jonathan Rasmusson | オーム社    | 2860"
+    ]
+  )
   fun `登録の場合、レスポンスコード 201 とヘッダーにロケーションが返る`(
-    id : Long, title : String, author: String, publisher: String, price: Int
+    id: Long, title: String, author: String, publisher: String, price: Int
   ) {
     // setup
     doReturn(Book(BookId(id), title, author, publisher, price))

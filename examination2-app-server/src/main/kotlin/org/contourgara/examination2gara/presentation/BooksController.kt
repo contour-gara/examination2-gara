@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus.CREATED
 import org.springframework.http.HttpStatus.NO_CONTENT
 import org.springframework.http.HttpStatus.OK
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -76,7 +77,7 @@ class BooksController(
    */
   @PostMapping("/v1/books")
   @ResponseStatus(CREATED)
-  fun create(@RequestBody createBookRequest: CreateBookRequest): ResponseEntity<Unit> {
+  fun create(@RequestBody @Validated createBookRequest: CreateBookRequest): ResponseEntity<Unit> {
     val book = createBookUseCase.execute(createBookRequest.toParam())
 
     val uri: URI = UriComponentsBuilder
