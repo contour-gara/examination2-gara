@@ -20,6 +20,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.boot.test.mock.mockito.SpyBean
 import org.springframework.http.HttpStatus.BAD_REQUEST
+import org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.web.servlet.MockMvc
 
@@ -234,5 +235,21 @@ class GlobalExceptionHandlerTest {
         .body("message", equalTo("specified book [id = 1] is not found."))
         .body("details", hasSize<String>(0))
     }
+  }
+
+  @Test
+  fun `予期しない例外が発生した場合、レスポンスコード 500 とエラーメッセージと空の詳細リストが返る`() {
+    // setup
+    doThrow(NullPointerException()).`when`(findBookByIdUseCase).execute("1")
+
+    // execute & assert
+    given()
+      .`when`()
+      .get("/v1/books/1")
+      .then()
+      .status(INTERNAL_SERVER_ERROR)
+      .body("code", equalTo("0000"))
+      .body("message", equalTo("unexpected exception has occurred. [null]"))
+      .body("details", hasSize<String>(0))
   }
 }

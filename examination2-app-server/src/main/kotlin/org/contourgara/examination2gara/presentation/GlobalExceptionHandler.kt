@@ -4,10 +4,12 @@ import org.contourgara.examination2gara.application.exception.NotFoundBookExcept
 import org.contourgara.examination2gara.presentation.response.ErrorResponse
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus.BAD_REQUEST
+import org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import kotlin.Exception
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
@@ -39,6 +41,17 @@ class GlobalExceptionHandler {
     return ErrorResponse(
       "0003",
       "specified book [id = ${e.id}] is not found.",
+      emptyList()
+    )
+  }
+
+  @ExceptionHandler(Exception::class)
+  @ResponseStatus(INTERNAL_SERVER_ERROR)
+  fun handleException(e: Exception): ErrorResponse {
+    log.error("unexpected exception has occurred. [${e.message}]")
+    return ErrorResponse(
+      "0000",
+      "unexpected exception has occurred. [${e.message}]",
       emptyList()
     )
   }
