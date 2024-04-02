@@ -89,7 +89,7 @@ class BooksIT {
     // execute & assert
     given()
       .contentType(APPLICATION_JSON_VALUE)
-      .body(readFrom("create.json"))
+      .body(readFrom("json/create.json"))
       .`when`()
       .post("/v1/books")
       .then()
@@ -104,7 +104,7 @@ class BooksIT {
     // execute & assert
     given()
       .contentType(APPLICATION_JSON_VALUE)
-      .body(readFrom("update.json"))
+      .body(readFrom("json/update.json"))
       .`when`()
       .patch("/v1/books/1")
       .then()
@@ -130,7 +130,7 @@ class BooksIT {
     // execute & assert
     given()
       .contentType(APPLICATION_JSON_VALUE)
-      .body(readFrom("create-bad.json"))
+      .body(readFrom("json/create-bad.json"))
       .post("/v1/books")
       .then()
       .statusCode(BAD_REQUEST.value())
@@ -146,12 +146,12 @@ class BooksIT {
     // execute & assert
     given()
       .contentType(APPLICATION_JSON_VALUE)
-      .body(readFrom("update-bad.json"))
+      .body(readFrom("json/update-bad.json"))
       .patch("/v1/books/1")
       .then()
       .statusCode(BAD_REQUEST.value())
       .body("code", equalTo("0002"))
       .body("message", equalTo("request validation error is occurred."))
-      .body("details[0]", equalTo("title must not be blank"))
+      .body("details[0]", equalTo("title length must be between 0 and 100"))
   }
 }
