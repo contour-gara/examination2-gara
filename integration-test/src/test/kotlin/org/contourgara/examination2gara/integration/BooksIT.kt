@@ -8,15 +8,15 @@ import com.github.database.rider.core.api.dataset.DataSet
 import com.github.database.rider.core.api.dataset.ExpectedDataSet
 import io.restassured.RestAssured.*
 import java.sql.DriverManager
+import org.contourgara.examination2gara.integration.TestUtils.readFrom
 import org.hamcrest.Matchers.*
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.springframework.http.HttpStatus.BAD_REQUEST
 import org.springframework.http.HttpStatus.CREATED
 import org.springframework.http.HttpStatus.NO_CONTENT
 import org.springframework.http.HttpStatus.OK
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
-
-
 
 @DBRider
 @DBUnit(caseInsensitiveStrategy = Orthography.LOWERCASE)
@@ -89,7 +89,7 @@ class BooksIT {
     // execute & assert
     given()
       .contentType(APPLICATION_JSON_VALUE)
-      .body("{\"title\": \"テスト駆動開発\",\"author\": \"Kent Beck\",\"publisher\": \"オーム社\",\"price\": 3080}")
+      .body(readFrom("create.json"))
       .`when`()
       .post("/v1/books")
       .then()
@@ -104,7 +104,7 @@ class BooksIT {
     // execute & assert
     given()
       .contentType(APPLICATION_JSON_VALUE)
-      .body("{\"author\": \"Uncle Bob\"}")
+      .body(readFrom("update.json"))
       .`when`()
       .patch("/v1/books/1")
       .then()
@@ -121,5 +121,37 @@ class BooksIT {
       .delete("/v1/books/1")
       .then()
       .statusCode(NO_CONTENT.value())
+  }
+
+  @DataSet("datasets/setup/1-book.yml")
+  @ExpectedDataSet("datasets/expected/1-book.yml")
+  @Test
+  fun `登録で入力制限に触れた場合、レスポンスコード 400 とエラー情報が返る`() {
+    // execute & assert
+    given()
+      .contentType(APPLICATION_JSON_VALUE)
+      .body(readFrom("create-bad.json"))
+      .post("/v1/books")
+      .then()
+      .statusCode(BAD_REQUEST.value())
+      .body("code", equalTo("0002"))
+      .body("message", equalTo("request validation error is occurred."))
+      .body("details[0]", equalTo("title must not be blank"))
+  }
+
+  @DataSet("datasets/setup/1-book.yml")
+  @ExpectedDataSet("datasets/expected/1-book.yml")
+  @Test
+  fun `更新で入力制限に触れた場合、レスポンスコード 400 とエラー情報が返る`() {
+    // execute & assert
+    given()
+      .contentType(APPLICATION_JSON_VALUE)
+      .body(readFrom("update-bad.json"))
+      .patch("/v1/books/1")
+      .then()
+      .statusCode(BAD_REQUEST.value())
+      .body("code", equalTo("0002"))
+      .body("message", equalTo("request validation error is occurred."))
+      .body("details[0]", equalTo("title must not be blank"))
   }
 }
