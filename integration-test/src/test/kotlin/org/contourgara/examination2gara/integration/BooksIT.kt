@@ -154,4 +154,18 @@ class BooksIT {
       .body("message", equalTo("request validation error is occurred."))
       .body("details[0]", equalTo("title length must be between 0 and 100"))
   }
+
+  @DataSet("datasets/setup/1-book.yml")
+  @ExpectedDataSet("datasets/expected/1-book.yml")
+  @Test
+  fun `存在しない ID を検索したで場合、レスポンスコード 400 とエラー情報が返る`() {
+    // execute & assert
+    given()
+      .get("/v1/books/2")
+      .then()
+      .statusCode(BAD_REQUEST.value())
+      .body("code", equalTo("0003"))
+      .body("message", equalTo("specified book [id = 2] is not found."))
+      .body("details", hasSize<String>(0))
+  }
 }
