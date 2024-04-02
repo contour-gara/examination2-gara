@@ -1,6 +1,7 @@
 package org.contourgara.examination2gara.presentation
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc.*
+import org.contourgara.examination2gara.TestUtils.readFrom
 import org.contourgara.examination2gara.application.CreateBookUseCase
 import org.contourgara.examination2gara.application.DeleteBookUseCase
 import org.contourgara.examination2gara.application.FindAllBooksUseCase
@@ -49,7 +50,7 @@ class GlobalExceptionHandlerTest {
       // execute & assert
       given()
         .contentType(APPLICATION_JSON)
-        .body("{\"title\": null, \"author\": null, \"publisher\": null, \"price\": null}")
+        .body(readFrom("create-null.json"))
         .`when`()
         .post("/v1/books")
         .then()
@@ -64,7 +65,7 @@ class GlobalExceptionHandlerTest {
       // execute & assert
       given()
         .contentType(APPLICATION_JSON)
-        .body("{\"title\": null, \"author\": \"Kent Beck\", \"publisher\": \"オーム社\", \"price\": 3080}")
+        .body(readFrom("create-null-only-title.json"))
         .`when`()
         .post("/v1/books")
         .then()
@@ -79,7 +80,7 @@ class GlobalExceptionHandlerTest {
       // execute & assert
       given()
         .contentType(APPLICATION_JSON)
-        .body("{\"title\": \"\", \"author\": \"\", \"publisher\": \"\", \"price\": 1000}")
+        .body(readFrom("create-empty-without-price.json"))
         .`when`()
         .post("/v1/books")
         .then()
@@ -94,7 +95,7 @@ class GlobalExceptionHandlerTest {
       // execute & assert
       given()
         .contentType(APPLICATION_JSON)
-        .body("{\"title\": \"\", \"author\": \"Kent Beck\", \"publisher\": \"オーム社\", \"price\": 3080}")
+        .body(readFrom("create-empty-only-title.json"))
         .`when`()
         .post("/v1/books")
         .then()
@@ -109,7 +110,7 @@ class GlobalExceptionHandlerTest {
       // execute & assert
       given()
         .contentType(APPLICATION_JSON)
-        .body("{\"title\": \"${"a".repeat(101)}\", \"author\":\"${"a".repeat(101)}\", \"publisher\": \"${"a".repeat(101)}\", \"price\": 3080}")
+        .body(readFrom("create-over100-without-price.json"))
         .`when`()
         .post("/v1/books")
         .then()
@@ -124,7 +125,7 @@ class GlobalExceptionHandlerTest {
       // execute & assert
       given()
         .contentType(APPLICATION_JSON)
-        .body("{\"title\": \"${"a".repeat(101)}\", \"author\": \"Kent Beck\", \"publisher\": \"オーム社\", \"price\": 3080}")
+        .body(readFrom("create-over100-only-title.json"))
         .`when`()
         .post("/v1/books")
         .then()
@@ -142,7 +143,7 @@ class GlobalExceptionHandlerTest {
       // execute & assert
       given()
         .contentType(APPLICATION_JSON)
-        .body("{\"title\": \"${"a".repeat(101)}\", \"author\":\"${"a".repeat(101)}\"}")
+        .body(readFrom("update-over100-title-author.json"))
         .`when`()
         .patch("/v1/books/1")
         .then()
@@ -157,7 +158,7 @@ class GlobalExceptionHandlerTest {
       // execute & assert
       given()
         .contentType(APPLICATION_JSON)
-        .body("{\"title\": \"${"a".repeat(101)}\"}")
+        .body(readFrom("update-over100-title.json"))
         .`when`()
         .patch("/v1/books/1")
         .then()
