@@ -7,13 +7,18 @@ import org.contourgara.examination2gara.application.DeleteBookUseCase
 import org.contourgara.examination2gara.application.FindAllBooksUseCase
 import org.contourgara.examination2gara.application.FindBookByIdUseCase
 import org.contourgara.examination2gara.application.UpdateBookUseCase
+import org.contourgara.examination2gara.application.exception.NotFoundBookException
+import org.contourgara.examination2gara.infrastructure.BookMapper
+import org.contourgara.examination2gara.infrastructure.BookRepositoryImpl
 import org.hamcrest.Matchers.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.mockito.Mockito.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.boot.test.mock.mockito.SpyBean
 import org.springframework.http.HttpStatus.BAD_REQUEST
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.web.servlet.MockMvc
@@ -32,15 +37,40 @@ class GlobalExceptionHandlerTest {
   @MockBean
   lateinit var createBookUseCase: CreateBookUseCase
 
-  @MockBean
+  @SpyBean
   lateinit var updateBookUseCase: UpdateBookUseCase
 
-  @MockBean
+  @SpyBean
   lateinit var deleteBookUseCase: DeleteBookUseCase
+
+  @SpyBean
+  lateinit var bookRepositoryImpl: BookRepositoryImpl
+
+  @MockBean
+  lateinit var bookMapper: BookMapper
 
   @BeforeEach
   fun setUp() {
     mockMvc(mockMvc)
+  }
+
+  @Nested
+  inner class `検索で` {
+    @Test
+    fun `本が存在しない場合、レスポンスコード 400 とエラーメッセージと空の詳細リストが返る`() {
+      // setup
+      doThrow(NotFoundBookException("1")).`when`(findBookByIdUseCase).execute("1")
+
+      // execute & assert
+      given()
+        .`when`()
+        .get("/v1/books/1")
+        .then()
+        .status(BAD_REQUEST)
+        .body("code", equalTo("0003"))
+        .body("message", equalTo("specified book [id = 1] is not found."))
+        .body("details", hasSize<String>(0))
+    }
   }
 
   @Nested
@@ -166,6 +196,43 @@ class GlobalExceptionHandlerTest {
         .body("code", equalTo("0002"))
         .body("message", equalTo("request validation error is occurred."))
         .body("details[0]", equalTo("title length must be between 0 and 100"))
+    }
+
+    @Test
+    fun `本が存在しない場合、レスポンスコード 400 とエラーメッセージと空の詳細リストが返る`() {
+      // setup
+      doThrow(NotFoundBookException("1")).`when`(findBookByIdUseCase).execute("1")
+
+      // execute & assert
+      given()
+        .contentType(APPLICATION_JSON)
+        .body(readFrom("update.json"))
+        .`when`()
+        .patch("/v1/books/1")
+        .then()
+        .status(BAD_REQUEST)
+        .body("code", equalTo("0003"))
+        .body("message", equalTo("specified book [id = 1] is not found."))
+        .body("details", hasSize<String>(0))
+    }
+  }
+
+  @Nested
+  inner class `削除で` {
+    @Test
+    fun `本が存在しない場合、レスポンスコード 400 とエラーメッセージと空の詳細リストが返る`() {
+      // setup
+      doThrow(NotFoundBookException("1")).`when`(findBookByIdUseCase).execute("1")
+
+      // execute & assert
+      given()
+        .`when`()
+        .delete("/v1/books/1")
+        .then()
+        .status(BAD_REQUEST)
+        .body("code", equalTo("0003"))
+        .body("message", equalTo("specified book [id = 1] is not found."))
+        .body("details", hasSize<String>(0))
     }
   }
 }
