@@ -137,7 +137,7 @@ class GlobalExceptionHandlerTest {
   }
 
   @Nested
-  inner class `更新` {
+  inner class `更新で` {
     @Test
     fun `タイトルと著者が 100 文字以上の場合、レスポンスコード 400 とエラーメッセージと詳細のリストが返る`() {
       // execute & assert
