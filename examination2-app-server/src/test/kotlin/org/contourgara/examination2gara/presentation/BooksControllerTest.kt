@@ -134,7 +134,7 @@ class BooksControllerTest {
     // execute & assert
     given()
       .contentType(APPLICATION_JSON_VALUE)
-      .body("{\"title\": \"$title\",\"author\": \"$author\",\"publisher\": \"$publisher\",\"price\": $price}")
+      .body("{\"title\": \"$title\", \"author\": \"$author\", \"publisher\": \"$publisher\", \"price\": $price}")
       .`when`()
       .post("/v1/books")
       .then()
