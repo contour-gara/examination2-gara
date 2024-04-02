@@ -134,4 +134,37 @@ class GlobalExceptionHandlerTest {
         .body("details[0]", equalTo("title length must be between 0 and 100"))
     }
   }
+
+  @Nested
+  inner class `更新` {
+    @Test
+    fun `タイトルと著者が 100 文字以上の場合、レスポンスコード 400 とエラーメッセージと詳細のリストが返る`() {
+      // execute & assert
+      given()
+        .contentType(APPLICATION_JSON)
+        .body("{\"title\": \"${"a".repeat(101)}\", \"author\":\"${"a".repeat(101)}\"}")
+        .`when`()
+        .patch("/v1/books/1")
+        .then()
+        .status(BAD_REQUEST)
+        .body("code", equalTo("0002"))
+        .body("message", equalTo("request validation error is occurred."))
+        .body("details", hasSize<String>(2))
+    }
+
+    @Test
+    fun `タイトルが 100 文字以上の場合、レスポンスコード 400 とエラーメッセージと想定されたメッセージのリストが返る`() {
+      // execute & assert
+      given()
+        .contentType(APPLICATION_JSON)
+        .body("{\"title\": \"${"a".repeat(101)}\"}")
+        .`when`()
+        .patch("/v1/books/1")
+        .then()
+        .status(BAD_REQUEST)
+        .body("code", equalTo("0002"))
+        .body("message", equalTo("request validation error is occurred."))
+        .body("details[0]", equalTo("title length must be between 0 and 100"))
+    }
+  }
 }

@@ -91,7 +91,7 @@ class BooksController(
 
   @PatchMapping("/v1/books/{id}")
   @ResponseStatus(NO_CONTENT)
-  fun update(@PathVariable id: String, @RequestBody updateBookRequest: UpdateBookRequest): Unit {
+  fun update(@PathVariable id: String, @RequestBody @Validated updateBookRequest: UpdateBookRequest): Unit {
     updateBookUseCase.execute(updateBookRequest.toParam(id))
   }
 
